@@ -1,0 +1,10 @@
+1) When would a linked list be a better choice than a dynamic array?
+If you want to remove/insert an element, it'd be easier to do in a linked list especially in the middle since you just need to move the pointers away compared to moving everything away to a dedicated slot.
+Even though a linked list has to store a bunch of things on a memory space, I think it'd be way more flexible in terms of sizing since it's not pre-defined? So it takes up less storage maybe...
+
+2) When would a dynamic array be a better choice than a linked list?
+
+When you need to directly access an element, dynamic array would be better since they have a slot -> direct access.
+I think the search time for array is better than linked list since it's slower for array to go through a list and get the index for an element!
+Also, linked list makes the computer remember more things (head, tail, nodes) compared to an array so that's probably a plus for the dynamic array.
+Furthermore, I think Linked List is cool but it's kind of a hassle compared to the charming, intuitive and familiar array. When there's not much difference between the two depending on the goal of use, I'd probably go with the array just because of that homey feeling.
