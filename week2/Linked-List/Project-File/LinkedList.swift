@@ -19,6 +19,11 @@ class Node {
     var nextNode: Node?
 }
 
+enum IndexError: Error {
+//create an error to be used later for when the index is larger than length
+    case outOfBounds
+}
+
 class LinkedList {
     var head: Node?
     var tail: Node?
@@ -149,21 +154,22 @@ class LinkedList {
         return myArray
     }
     
-    func insertAt(index: Int, element : Int) {
+    func insertAt(index: Int, element : Int) throws {
     //insert a node at a given index value
         //declare new node and create a current node tracker
         let newNode = Node(value: element)
         var currentNode = self.head
         
-        if index > self.length {
-            //error prompt for index outside size of list. I don't quite understand how to add errors properly so let's just use this
-            print("Error!! Linked list currently isn't long enough to have that index")
-            
-            //if index is at 0, use insertAtHead function
-        } else if index == 0 {
+        //if index is larger than length, throw out an error. Thanks Justin!
+        guard index <= self.length else{
+            throw IndexError.outOfBounds
+        }
+
+        //if index is at 0, use insertAtHead function
+        if index == 0 {
                 self.insertAtHead(element: element)
             
-            //if user wants to insert at tail, use that function
+        //if user wants to insert at tail, use that function
         } else if index == self.length {
             self.insertAtTail(element: element)
             
@@ -177,14 +183,17 @@ class LinkedList {
         }
     }
     
-    func removeFrom( index : Int ) {
+    func removeFrom( index : Int ) throws{
     //remove a note at a given index. declare current note tracker
         var currentNode = self.head
+        
+        //if index is larger than length, throw out an error
+        guard index < self.length else{
+            throw IndexError.outOfBounds
+        }
+        
         if index == 0 {
             self.removeFromHead()
-            
-        } else if index >= self.length {
-            print("Error!! Linked list currently isn't long enough to have that index")
             
         } else if index == self.length - 1 {
             self.removeFromTail()
@@ -201,28 +210,9 @@ class LinkedList {
     func append(list : LinkedList) {
     // append a linked list to an existing one
         
-        if self.head == nil {
-            //if the list is blank then just copy the other list
-            self.head = list.head
-            self.tail = list.tail
-            
-        } else {
-            //make the tracking node the head of the list. insert that node's value to the tail of the existing list. then update the tracking node to the next. it runs through the length of the new list
-            for _ in 0...list.length - 1 {
-                var currentNode = list.head
-                self.insertAtTail(element: currentNode!.value)
-                
-                currentNode = currentNode?.nextNode
-                list.head = currentNode
-            }
-        }
+        self.tail?.nextNode = list.head
+        self.tail = list.tail
     }
-    // This should also work for append but doesn't? I'm not sure what the problem is here! but this would reduce the runtime a lot!
-    //
-    //      self.tail?.nextNode?.value = list.head
-    //      self.tail = list.tail
-    //      self.tail?.nextNode = nil
-    //
     
     
     func search( element : Int) -> Int? {
