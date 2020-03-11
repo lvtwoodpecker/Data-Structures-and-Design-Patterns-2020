@@ -9,7 +9,7 @@
 import Foundation
 
 
-let myList = LinkedList()
+let myList = LinkedList<Int>()
 myList.insertAtHead(element: 12)
 myList.insertAtHead(element: 12)
 myList.insertAtHead(element: 1)
@@ -39,7 +39,7 @@ print("Here's your list:", myList.toArray())
 //
 //print("Here's a list of indices in this goddamn list:", myList.searchForAll(element: 2))
 
-let newList = LinkedList()
+let newList = LinkedList<Int>()
 //newList.insertAtHead(element: 11)
 //newList.insertAtHead(element: 13)
 //newList.insertAtHead(element: 10)
