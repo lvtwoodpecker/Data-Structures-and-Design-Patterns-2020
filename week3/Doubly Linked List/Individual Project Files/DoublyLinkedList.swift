@@ -74,8 +74,7 @@ class LinkedList<T: Equatable> {
         
         if self.tail == nil {
             //if new node replaces tail and list was blank
-            self.tail = newNode
-            
+            self.tail = newNode  
         }
     }
 
@@ -84,9 +83,9 @@ class LinkedList<T: Equatable> {
     //set up a new node at tail
         let newNode = Node(value: element, prevNode: self.tail)
             
-            //move tail to next node; update the tail
-            self.tail?.nextNode = newNode
-            self.tail = newNode
+        //move tail to next node; update the tail
+        self.tail?.nextNode = newNode
+        self.tail = newNode
             
         if self.head == nil {
             //new node replaces head if list is blank
