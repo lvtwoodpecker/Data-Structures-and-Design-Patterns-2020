@@ -45,5 +45,5 @@ let newList = LinkedList<Int>()
 //newList.insertAtHead(element: 10)
 print(newList.toArray())
     
-myList.append(list: newList)
-print("Your new list:", myList.toArray())
+newList.append(list: myList)
+print("Your new list:", newList.toArray())
