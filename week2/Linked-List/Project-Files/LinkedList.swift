@@ -201,10 +201,22 @@ class LinkedList<T: Equatable> {
     }
     
     func append(list : LinkedList) {
-    // append a linked list to an existing one
+    //appends a linked list to an existing one
         
-        self.tail?.nextNode = list.head
-        self.tail = list.tail
+        if self.head == nil {
+        //if old list is empty, old list becomes new list
+            self.head = list.head
+            self.tail = list.tail
+            
+        } else {
+        //if not empty, change the pointer to its place
+            self.tail?.nextNode = list.head
+            
+            if list.head != nil {
+            //if the new list isn't blank, change the tail to the new list's tail (otherwise it stays at nil)
+                self.tail = list.tail
+            }
+        }
     }
     
     
