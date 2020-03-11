@@ -8,11 +8,11 @@
 
 import Foundation
 
-class Node {
+class Node<T: Equatable> {
 //set up the Node class and its value
-    var value: Int
+    var value: T
     
-    init(value: Int) {
+    init(value: T) {
         self.value = value
     }
     
@@ -24,18 +24,18 @@ enum IndexError: Error {
     case outOfBounds
 }
 
-class LinkedList {
-    var head: Node?
-    var tail: Node?
+class LinkedList<T: Equatable> {
+    var head: Node<T>? = nil
+    var tail: Node<T>? = nil
     
-    var firstElement: Int? {
+    var firstElement: T? {
         get {
         //Return first element
             return self.head?.value
         }
     }
     
-    var lastElement: Int? {
+    var lastElement: T? {
         get {
         //Return last element
             return self.tail?.value
@@ -58,35 +58,28 @@ class LinkedList {
                 currentNode = currentNode?.nextNode
             }
             
-            //return the counter
             return counter
         }
     }
 
     
-    func insertAtHead( element: Int ) {
+    func insertAtHead( element: T ) {
     //insert a new node at head
         let newNode = Node(value: element)
         
-        if self.head == nil {
-            
-            //new node replaces tail and head if list is blank
+        // move the head to next node; update the head
+        newNode.nextNode = self.head
+        self.head = newNode
+        
+        if self.tail == nil {
+            //if new node replaces tail and list was blank
             self.tail = newNode
-            self.head = newNode
-            self.head?.nextNode = nil
-            self.tail?.nextNode = nil
-            
-        } else {
-
-            //if not blank, move the head to next node; update the head
-            newNode.nextNode = self.head
-            self.head = newNode
             
         }
     }
 
     
-    func insertAtTail( element: Int ){
+    func insertAtTail( element: T ){
     //set up a new node at tail -> the next node will be nil
         let newNode = Node(value: element)
         newNode.nextNode = nil
@@ -139,10 +132,10 @@ class LinkedList {
         }
     }
 
-    func toArray() -> [Int] {
+    func toArray() -> [T] {
     //turn the Linked List to an array
         //declare blank array and node to append to the array
-        var myArray: [Int] = []
+        var myArray: [T] = []
         var nodeToAppend = self.head
         
         // if the node isn't nil (not after tail), append it to the array then jump to the next node
@@ -154,7 +147,7 @@ class LinkedList {
         return myArray
     }
     
-    func insertAt(index: Int, element : Int) throws {
+    func insertAt(index: Int, element : T) throws {
     //insert a node at a given index value
         //declare new node and create a current node tracker
         let newNode = Node(value: element)
@@ -215,7 +208,7 @@ class LinkedList {
     }
     
     
-    func search( element : Int) -> Int? {
+    func search( element : T) -> Int? {
     //finds first instance of element in list
         var currentNode = self.head
         var counter: Int? = 0
@@ -226,7 +219,7 @@ class LinkedList {
             currentNode = currentNode?.nextNode
             
             //if the counter runs through the list without finding any matching element, break the loop. make the counter nil.
-            if counter! == self.length {
+            if counter == self.length {
                 counter = nil
                 break
             }
@@ -235,7 +228,7 @@ class LinkedList {
         return counter
     }
     
-    func searchForAll( element : Int) -> [Int] {
+    func searchForAll( element : T?) -> [Int] {
     //returns all indicies of the list that hold this element
         var myArray: [Int] = []
         var currentNode = self.head
