@@ -145,7 +145,7 @@ class LinkedList<T: Equatable> {
         var currentNode = self.head
         
         //if index is larger than length, throw out an error.
-        guard index <= self.length & index > 0 else {
+        guard index <= self.length && index > 0 else {
             throw ListError.IndexOutOfBounds
         }
 
@@ -176,7 +176,7 @@ class LinkedList<T: Equatable> {
         var currentNode = self.head
         
         //if index is larger than length, throw out an error
-        guard index < self.length & index > 0 else {
+        guard index < self.length && index > 0 else {
             throw ListError.IndexOutOfBounds
         }
         
