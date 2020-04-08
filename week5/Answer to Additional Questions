@@ -1,4 +1,32 @@
 1) Draw a tree for which the preorder and inorder traversals generate the same sequence
+
+Preorder is Node, Left, Right
+Inorder is Left, Node, Right
+
+Since both of these has Right at the end, I think if the tree only has the right child in it then they'd be the same. Example:
+
+                                    1
+                                     \\
+                                      \\
+                                       2
+                                        \\
+                                         \\
+                                          3
+                                           \\
+                                            \\
+                                             4
+                                              \\
+                                               \\
+                                                5
+                                                
+Preorder: 1, 2, 3, 4, 5
+Inorder: 1, 2, 3, 5, 5
+
 2) Design an algorithm (pseudocode or prose) to check if a binary tree is a binary search tree
+
 3) Design an algorithm (pseudocode or prose) to check if a binary tree is perfectly balanced
 (smallest height possible for the number of nodes)
+
+Pseudo: checkBalanced() -> Bool {
+            if self.size//` = 
+        }
