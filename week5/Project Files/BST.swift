@@ -25,7 +25,7 @@ class BSTNode<T : Comparable> {
 		let leftHeight = self.leftChild?.height ?? 0 //if nil, height = 0
 		let rightHeight = self.rightChild?.height ?? 0
 
-		//return the longer path among the left and right branch + 1 which is the root
+		//return the longer path among the left and right branch, + 1 for each time it goes down another level
         return max(leftHeight, rightHeight) + 1
     }
 
