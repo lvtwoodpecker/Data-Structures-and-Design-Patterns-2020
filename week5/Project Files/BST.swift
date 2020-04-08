@@ -20,36 +20,45 @@ class BSTNode<T : Comparable> {
 	}
 
    	var height : Int {
-		
-		let leftHeight = self.leftChild?.height ?? 0
+	//calculate maximum height of the tree
+
+		let leftHeight = self.leftChild?.height ?? 0 //if nil, height = 0
 		let rightHeight = self.rightChild?.height ?? 0
 
-		// return the height of all elements leading up to the first left children + 1 which is the root
+		//return the longer path among the left and right branch + 1 which is the root
         return max(leftHeight, rightHeight) + 1
     }
 
 	var size : Int {
-		let leftSize = self.leftChild?.size ?? 0
+	//calculate the total number of nodes inside the tree
+
+		let leftSize = self.leftChild?.size ?? 0 //if nil, size = 0
 		let rightSize = self.rightChild?.size ?? 0
 
+		//return the number of elements on both branches + root
 		return leftSize + rightSize + 1
 	}
 
-	var elements : [T] { //in order
+	var elements : [T] { 
+	//return array of all elements in order
+
 		var myArray: [T] = []
 
+		//the root is the middle of the array
 		myArray.append(self.element)
 
 		if self.leftChild != nil {
+		//add all left children to the left side of the array (smallest first)
 			myArray = self.leftChild!.elements + myArray
 		}
 
 		if self.rightChild != nil {
+		//add all right children to the right side of the array
 			myArray = myArray + self.rightChild!.elements
 		}
 
 	/*
-	it's weird. I tried using "append" for the right children and "insert at: 0" for left, but it couldn't compile saying that the children.elements array wasnt Comparable (unlike the self.element that was already in the array). yet somehow this worked using array concatenation instead. Is it because append and insert are more type sensitive? What's the difference between the two? A quick Google tells me that they're not too much different apart from the runtime.
+	it's weird. I tried using "append" for the right children and "insert at: 0" for left, but it couldn't compile saying that the children.elements array wasnt Comparable (hence cannot join the self.element that is Comparable that was already in the array). yet somehow this worked using array concatenation instead. Is it because append and insert are more type sensitive? What's the difference between the two? A quick Google tells me that they're not too much different apart from the runtime.
 	*/
 
 		return myArray
@@ -61,14 +70,17 @@ class BSTNode<T : Comparable> {
 
 		/*
 		if the new node is equal to the current node, do nothing. 
-		I'm aware that this is for clarity, but I can just remove it altogether right?
+		I'm aware that this is for clarity, but I can just remove the whole line altogether right?
 		*/
 		if newNode.element == self.element {
 			return
 		}
 
 		else if newNode.element < self.element {
-			
+		/*if newNode is smaller than current node, go to the left branch.
+		if there already exists a left child, do it recursively until we find a leftChild = nil. then make that the newNode!
+		*/
+
 			if self.leftChild != nil {
 				self.leftChild!.insert(element: newNode.element)
 			}
@@ -78,6 +90,7 @@ class BSTNode<T : Comparable> {
 		}
 
 		else if newNode.element > self.element {
+		//similar to the left branch
 			
 			if self.rightChild != nil {
 				self.rightChild!.insert(element: newNode.element)
@@ -93,29 +106,20 @@ class BSTNode<T : Comparable> {
 			return true
 		}
 
-		else if element < self.element {
-			return self.leftChild!.contains(element: element)
-		}
-
-		else if element > self.element {
-			return self.rightChild!.contains(element: element)
-		}
-
 		else {
-			return false
+			if self.leftChild?.contains(element: element) == true{
+				return true
+			}
+
+			else if self.rightChild?.contains(element: element) == true {
+				return true
+			}
+
+			else {
+				return false
+			}
 		}
 
-	}
-
-	func  search( element : T ) -> T? {
-	//return the stored element if you find it, nil if you don't 
-		if self.contains(element: element) {
-			return element
-		}
-
-		else {
-			return nil
-		}
 	}
 
 }
@@ -154,6 +158,7 @@ class BinarySearchTree<T : Comparable> {
 	}
 
 	init( fromSortedData : [T] = [] )  {
+	//let tree take in an array. insert each element of the array to the list
 		for element in fromSortedData {
 			self.insert(element: element)
 		}
@@ -179,10 +184,18 @@ class BinarySearchTree<T : Comparable> {
 	}
 
 	func search( element : T ) -> T? {
-		return self.root!.search( element: element)
+	//searching is actually just re-doing the contain function that returns the element
+
+		if self.root!.contains( element: element) {
+			return element
+		}
+
+		else {
+			return nil
+		}
 	}
 
-	/* after countless hours I've finally found something that might work -- add stuff onto a queue and then pop them into the target array. I briefly had that idea for the implementation of the elements (in order) array, but I quickly found a simpler solution afterwards. this however was such a pain!
+	/* after so much time I've finally found something that might work -- add stuff onto a queue and then pop them into the target array. I briefly had that idea for the implementation of the elements (in order) array, but I quickly found a simpler solution afterwards. the process of figuring this out however was such a pain!
 	*/
 
 	func makeBreadthFirstArray() -> [T] {
