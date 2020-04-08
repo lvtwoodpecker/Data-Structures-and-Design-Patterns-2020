@@ -1,0 +1,4 @@
+1) Draw a tree for which the preorder and inorder traversals generate the same sequence
+2) Design an algorithm (pseudocode or prose) to check if a binary tree is a binary search tree
+3) Design an algorithm (pseudocode or prose) to check if a binary tree is perfectly balanced
+(smallest height possible for the number of nodes)
