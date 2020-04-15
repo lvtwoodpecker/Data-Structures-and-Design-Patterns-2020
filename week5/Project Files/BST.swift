@@ -169,8 +169,9 @@ class BinarySearchTree<T : Comparable> {
 			let newNode = BSTNode(element: element)
 			self.root = newNode
 		}
-
-		self.root!.insert(element : element)
+		else {
+			self.root!.insert(element : element)
+		}
 	}
 
 	func contains( element : T ) -> Bool {
