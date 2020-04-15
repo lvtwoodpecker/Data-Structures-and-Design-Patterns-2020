@@ -24,6 +24,23 @@ Inorder: 1, 2, 3, 5, 5
 
 2) Design an algorithm (pseudocode or prose) to check if a binary tree is a binary search tree
 
+Pseudo code: 
+checkBinarySearchTree() -> Bool {
+    let Array = self.elements
+    var counter = 0
+    for i in Array(0, Array.length) {
+    
+      if Array[i + 1] < Array[i] {
+        return false
+        break
+      }
+      
+      else {
+        counter +=1 }
+    if counter = Array.length {
+      return true
+    }
+}
 3) Design an algorithm (pseudocode or prose) to check if a binary tree is perfectly balanced
 (smallest height possible for the number of nodes)
 
@@ -39,8 +56,7 @@ And so on....
 It seems to me we can do a log2 to find min height from size:
 Min height = log2(size) + 1 (the log is rounded down)
 
-Pseudo: 
-
+Code:
 checkBalanced() -> Bool {
             if floor(log2(self.size)) = self.height {
               return true
