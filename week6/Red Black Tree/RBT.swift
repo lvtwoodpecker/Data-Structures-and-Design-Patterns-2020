@@ -21,13 +21,13 @@ Root is black as a result (or else nothing can work lol)
 	var element: T
 	var leftChild: RBNode?
 	var rightChild: RBNode?
-	var isRed: Bool? //to determine color of node
+	var isRed: Bool //to determine color of node
 
-	init(element: T, leftChild: RBNode? = nil, rightChild: RBNode? = nil, isRed: Bool? = true) {
+	init(element: T, leftChild: RBNode? = nil, rightChild: RBNode? = nil) {
     	self.element = element
 		self.leftChild = leftChild
     	self.rightChild = rightChild
-		self.isRed = isRed //default is true since new inserts are red
+		self.isRed = true //default is true since new inserts are red
 	}
 
    	var height : Int {
@@ -103,86 +103,99 @@ Root is black as a result (or else nothing can work lol)
 	}
 
 	func rotateLeft() {
+
 		if self.rightChild != nil {
+		//make newNode to be the one that's suppose to be on the left of self
+			let newNode = RBNode(element: self.element, 
+				leftChild: self.leftChild, 
+				rightChild: self.rightChild?.leftChild)
 
-			//if only the right child is red, then rotate
-			if self.rightChild!.isRed! && self.leftChild!.isRed! == false {
-		
-				let newNode = self.rightChild!
-				self.rightChild = newNode.leftChild
-				//change current node to left child of new node
-				newNode.leftChild = self
+			self.element = self.rightChild!.element
+			self.rightChild = self.rightChild?.rightChild
 
-				//change the colors accordingly
-				newNode.isRed = self.isRed
-				self.isRed = true
-			}
+			self.leftChild = newNode
 
-			else {
-				self.rightChild!.rotateLeft()
-			}
-		}
-		else {
-			return
+			self.isRed = true
 		}
 	}
 
 	func rotateRight() {
 		if self.leftChild != nil {
+		//make newNode to be the one that's suppose to be on the right of self
 
-			//if 2 in a row is red, rotate
-			if self.leftChild!.isRed! && self.leftChild!.leftChild!.isRed! {
+			let newNode = RBNode(element: self.element,
+				leftChild: self.leftChild?.rightChild,
+				rightChild: self.rightChild)
 
-				let newNode = self.leftChild!
-				self.leftChild = newNode.rightChild
-				newNode.rightChild = self
+			self.element = self.leftChild!.element
 
-				//change color accordingly
-				newNode.isRed = self.isRed
-				self.isRed = true
-			}
+			self.leftChild = self.leftChild?.leftChild
 
-			else {
-				self.leftChild!.rotateRight()
-			}
-		}
-		else {
-			return
-		}	
+			self.rightChild = newNode
+
+			self.isRed = true
+	    }
 	}
 
 	func colorFlip() {
-		if self.leftChild != nil {
-			//if both children are red, flip color
-			if self.rightChild!.isRed! && self.leftChild!.isRed! {
-				self.isRed = true
-				self.rightChild?.isRed = false
-				self.leftChild?.isRed = false
-			}
+	//change color of current node to red, children to black
+		self.isRed = true
+		self.leftChild?.isRed = false
+		self.rightChild?.isRed = false
+	}
 
-			else {
-				self.leftChild!.colorFlip()
-			}
+  	func balanceTree() {
+
+    	if self.rightChild?.isRed == true {
+		//rotate left if right child is red
+      		self.rotateLeft()
+    	}
+
+    	if (self.leftChild?.isRed == true) && 
+		(self.leftChild?.leftChild?.isRed == true) {
+		//rotate right if 2 reds in a row
+      		self.rotateRight()
+    	}
+
+    	if (self.leftChild?.isRed == true) && (self.rightChild?.isRed == true) {
+		//flip if 2 red children
+      		self.colorFlip()
+    	}
+
+		//recursion!
+    	self.leftChild?.balanceTree()
+    	self.rightChild?.balanceTree()
+
+  	}
+
+	func checkBalanced() -> Bool {
+
+		if self.rightChild?.isRed == true {
+			return false
 		}
 
-		else if self.rightChild != nil {
-			//if both children are red, flip color
-			if self.rightChild!.isRed! && self.leftChild!.isRed! {
-				self.isRed = true
-				self.rightChild?.isRed = false
-				self.leftChild?.isRed = false
+		else if (self.leftChild?.isRed == true) && (self.leftChild?.leftChild?.isRed == true) {
+			return false
 		}
 
-			else {
-				self.rightChild!.colorFlip()
-			}
+		else if (self.leftChild?.isRed == true) && 
+		(self.rightChild?.isRed == true) {
+			return false
 		}
+
 		else {
-			return
+
+			if self.leftChild?.checkBalanced() == true &&  self.rightChild?.checkBalanced() == true {
+				return true
+			}
+
+			else {
+				return false
+			}
 		}
 	}
 
-	func contains( element : T ) -> Bool {
+  	func contains( element : T ) -> Bool {
 		if element == self.element {
 			return true
 		}
@@ -200,7 +213,6 @@ Root is black as a result (or else nothing can work lol)
 				return false
 			}
 		}
-
 	}
 
 }
@@ -238,30 +250,24 @@ class RedBlackTree<T : Comparable> {
 		return self.root!.elements
 	}
 
-	init( fromSortedData : [T] = [] )  {
-	//let tree take in an array. insert each element of the array to the list
-		for element in fromSortedData {
-			self.insert(element: element)
-		}
-	}
-
-	func balanceTree() {
-		self.root?.rotateRight()
-		self.root?.rotateLeft()
-		self.root?.colorFlip()
+	init()  {
 	}
 
 	func insert( element : T ) {
 		if self.isEmpty {
-			let newNode = RBNode(element: element, isRed: false)
+			let newNode = RBNode(element: element)
 			self.root = newNode
+			self.root!.isRed = false
 		}
 
 		else {
 			self.root!.insert(element : element)
+			self.root!.balanceTree()
 		}
+	}
 
-		self.balanceTree()
+	func checkBalanced() -> Bool {
+		return self.root!.checkBalanced()
 	}
 
 	func contains( element : T ) -> Bool {
