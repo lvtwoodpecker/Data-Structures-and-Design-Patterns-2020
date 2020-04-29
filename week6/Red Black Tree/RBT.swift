@@ -114,8 +114,6 @@ Root is black as a result (or else nothing can work lol)
 			self.rightChild = self.rightChild?.rightChild
 
 			self.leftChild = newNode
-
-			self.isRed = true
 		}
 	}
 
@@ -132,8 +130,6 @@ Root is black as a result (or else nothing can work lol)
 			self.leftChild = self.leftChild?.leftChild
 
 			self.rightChild = newNode
-
-			self.isRed = true
 	    }
 	}
 
@@ -185,12 +181,12 @@ Root is black as a result (or else nothing can work lol)
 
 		else {
 
-			if self.leftChild?.checkBalanced() == true &&  self.rightChild?.checkBalanced() == true {
-				return true
+			if self.leftChild?.checkBalanced() == false ||  		  self.rightChild?.checkBalanced() == false {
+				return false
 			}
 
 			else {
-				return false
+				return true
 			}
 		}
 	}
@@ -253,6 +249,19 @@ class RedBlackTree<T : Comparable> {
 	init()  {
 	}
 
+	func balanceTree() {
+	//i didn't add this at first and relied on everything to be done at the node level, but I then realized that the color flipping on node level needs to be different on the tree root. children's color should be changed but not the root, which is always black. So I need to specify this on the tree level.
+
+		if self.isEmpty == false {
+			while self.root!.checkBalanced() == false {
+			//do this until the black root is part of the balanced tree.
+
+				self.root!.balanceTree()
+				self.root!.isRed = false
+			}
+		}
+	}
+
 	func insert( element : T ) {
 		if self.isEmpty {
 			let newNode = RBNode(element: element)
@@ -262,8 +271,10 @@ class RedBlackTree<T : Comparable> {
 
 		else {
 			self.root!.insert(element : element)
-			self.root!.balanceTree()
 		}
+
+		self.balanceTree()
+
 	}
 
 	func checkBalanced() -> Bool {
