@@ -168,13 +168,13 @@ class RedBlackTree<T : Comparable> {
 		//not sure if this is valid though. this is like balancing the tree everytime something is deleted?
 		var array = self.makeBreadthFirstArray()
 		array = array.filter { $0 != element }
-		let newBST = RedBlackTree()
+		let tree = RedBlackTree()
 
 		for node in array {
-			newBST.insert(element: node)
+			tree.insert(element: node)
 		}
 
-		self.root = newBST.root 
+		self.root = tree.root 
 	}
 
 }
