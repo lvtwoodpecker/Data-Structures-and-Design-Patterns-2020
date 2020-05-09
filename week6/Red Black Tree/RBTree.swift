@@ -60,7 +60,6 @@ class RedBlackTree<T : Comparable> {
 			throw RBTError.arrayNotSorted
 		}
 
-
 		//find the middle point of the array
 		let endIndex = sortedArray.endIndex	
 		let middleIndex = endIndex / 2
