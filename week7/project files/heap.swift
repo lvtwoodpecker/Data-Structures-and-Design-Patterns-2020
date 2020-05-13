@@ -11,13 +11,12 @@ import Foundation
 class Heap<T : Comparable> {
 	var heap: [T] = []
 
-	init( fromSortedData : [T] = [] )  {
-	//let tree take in an array. insert each element of the array to the list
-		for element in fromSortedData {
-			self.insert(element: element)
+	init(_ fromSortedData : [T] = [] )  {
+	//let tree take in a sorted Array
+		for element in fromSortedData.sorted() {
+			heap.append(element)
 		}
-	}
-
+	}	
 	func parentIndex(_ index: Int) -> Int {
 	//return index of parent of an element
 		return (index - 1) / 2
@@ -52,24 +51,25 @@ class Heap<T : Comparable> {
 		let last = self.heap.count - 1
 		self.heap.swapAt(0, last)
 
+		var currentIndex = 0
 		var left = leftIndex(0)
 		var right = rightIndex(0)
-		var currentIndex = 0
 
 		let root = self.heap.popLast()!
 
-		while heap[currentIndex] > heap[left] {
-			heap.swapAt(0, left)
-			currentIndex = left
+		while 	heap[currentIndex] > heap[left] || 
+				heap[currentIndex] > heap[right] {
+				
+				let biggerN = max(left, right)
+				heap.swapAt(currentIndex, biggerN)
+				currentIndex = biggerN
 
-			left = leftIndex(left)
-		} 
+				left = leftIndex(currentIndex)
+				right = rightIndex(currentIndex)
 
-		while heap[currentIndex] > heap[right] {
-			heap.swapAt(0, right)
-			currentIndex = right
-
-			right = rightIndex(right)
+				if left > (self.heap.count - 1) || right > (self.heap.count - 1) {
+					break
+				}
 		}
 
 		return root
