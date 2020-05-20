@@ -70,9 +70,6 @@ class Heap<T : Comparable> {
 					heap.swapAt(currentIndex, right)
 					currentIndex = right
 				}
-				//let smallerN = min(heap[left], heap[right])
-				//heap.swapAt(currentIndex, smallerN)
-				//currentIndex = smallerN
 
 				left = leftIndex(currentIndex)
 				right = rightIndex(currentIndex)
