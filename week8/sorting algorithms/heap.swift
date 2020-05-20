@@ -1,3 +1,9 @@
+//
+//  heap.swift
+//
+
+import Foundation
+
 class Heap<T : Comparable> {
 	var heap: [T] = []
 
@@ -37,22 +43,29 @@ class Heap<T : Comparable> {
 	}
 
 	func extractMin() -> T {
-
+		
+		//swap last and first element
 		let last = self.heap.count - 1
 		self.heap.swapAt(0, last)
+		let root = self.heap.popLast()!
 
+		//Reordering the heap
 		var currentIndex = 0
 		var left = leftIndex(0)
 		var right = rightIndex(0)
 
-		let root = self.heap.popLast()!
-
 		while 	heap[currentIndex] > heap[left] || 
 				heap[currentIndex] > heap[right] {
 				
-				let biggerN = max(left, right)
-				heap.swapAt(currentIndex, biggerN)
-				currentIndex = biggerN
+				if heap[left] <= heap[right] {
+					heap.swapAt(currentIndex, left)
+					currentIndex = left
+				}
+
+				else {
+					heap.swapAt(currentIndex, right)
+					currentIndex = right
+				}
 
 				left = leftIndex(currentIndex)
 				right = rightIndex(currentIndex)
