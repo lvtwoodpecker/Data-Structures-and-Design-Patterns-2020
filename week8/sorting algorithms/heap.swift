@@ -4,6 +4,10 @@
 
 import Foundation
 
+enum IndexError: Error {
+	case EmptyHeap
+}
+
 class Heap<T : Comparable> {
 	var heap: [T] = []
 
@@ -18,7 +22,7 @@ class Heap<T : Comparable> {
 		return (index - 1) / 2
 	}
 
-	func leftIndex(_ index : Int) -> Int{
+	func leftIndex(_ index : Int) -> Int {
 	// left child of element at index
 		return (index * 2) + 1
 	}
@@ -29,34 +33,38 @@ class Heap<T : Comparable> {
 
 	func insert(element : T) {
 		
-		self.heap.append(element)
+		heap.append(element)
 
-		var currentIndex = self.heap.count - 1
+		var currentIndex = heap.count - 1
 		var parent = parentIndex(currentIndex)
 
 		//there's a function called swapAt in Array :o
-		while currentIndex != 0 && self.heap[parent] > self.heap[currentIndex] {
-				self.heap.swapAt(currentIndex, parent)
+		while currentIndex != 0 && heap[parent] >  heap[currentIndex]{
+				heap.swapAt(currentIndex, parent)
 				currentIndex = parent
 				parent = parentIndex(currentIndex)
 		}
 	}
 
-	func extractMin() -> T {
+	func extractMin() throws -> T {
 		
+		guard !heap.isEmpty else {
+			throw IndexError.EmptyHeap
+		}
 		//swap last and first element
-		let last = self.heap.count - 1
+		let last = heap.count - 1
 		self.heap.swapAt(0, last)
-		let root = self.heap.popLast()!
+		let root = heap.popLast()!
 
 		//Reordering the heap
 		var currentIndex = 0
 		var left = leftIndex(0)
 		var right = rightIndex(0)
 
-		while 	heap[currentIndex] > heap[left] || 
-				heap[currentIndex] > heap[right] {
-				
+		if heap.count > 3 {
+		//loop applies to heaps with valid left and right children only
+			while 	heap[currentIndex] > heap[left] || heap[currentIndex] > heap[right] {
+					
 				if heap[left] <= heap[right] {
 					heap.swapAt(currentIndex, left)
 					currentIndex = left
@@ -70,15 +78,22 @@ class Heap<T : Comparable> {
 				left = leftIndex(currentIndex)
 				right = rightIndex(currentIndex)
 
-				if left > (self.heap.count - 1) || right > (self.heap.count - 1) {
+				if left > (heap.count - 1) || right > heap.count - 1{
 					break
 				}
+			}
 		}
+
+		else {
+			
+			heap.reverse()
+		}
+
 
 		return root
 	}
 
 	var isEmpty : Bool {
-		return self.heap.isEmpty
+		return heap.isEmpty
 	}
 }
