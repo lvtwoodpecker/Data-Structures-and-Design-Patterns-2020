@@ -15,7 +15,7 @@ func AverageTimeHeap(_ array: [Int]) -> Double {
 	var totalTime : Int64 = 0
 	for _ in 0..<100 {
 		let start = Date().microsecondsSince1970
-		array.heapSort()
+		_ = array.heapSort()
 		let end = Date().microsecondsSince1970 - start
 		totalTime += end
 	}
@@ -23,14 +23,14 @@ func AverageTimeHeap(_ array: [Int]) -> Double {
 	return 	Double(totalTime) / 5 / 1000000
 }
 
-// Take a function as a parameter, then execute that said function inside the average time function so that I won't need to repeat code.
+// It'd be nice if I could take a function as a parameter, then execute that said function inside the average time function so that I won't need to repeat code.
 
 func AverageTimeBubble(_ array: [Int]) -> Double {
 	//in seconds
 	var totalTime : Int64 = 0
 	for _ in 0..<100 {
 		let start = Date().microsecondsSince1970
-		array.bubbleSort()
+		_ = array.bubbleSort()
 		let end = Date().microsecondsSince1970 - start
 		totalTime += end
 	}
@@ -43,7 +43,7 @@ func AverageTimeInsertion(_ array: [Int]) -> Double {
 	var totalTime : Int64 = 0
 	for _ in 0..<100 {
 		let start = Date().microsecondsSince1970
-		array.insertionSort()
+		_ = array.insertionSort()
 		let end = Date().microsecondsSince1970 - start
 		totalTime += end
 	}
@@ -56,7 +56,7 @@ func AverageTimeSelection(_ array: [Int]) -> Double {
 	var totalTime : Int64 = 0
 	for _ in 0..<100 {
 		let start = Date().microsecondsSince1970
-		array.selectionSort()
+		_ = array.selectionSort()
 		let end = Date().microsecondsSince1970 - start
 		totalTime += end
 	}
