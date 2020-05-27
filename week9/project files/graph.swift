@@ -60,8 +60,9 @@ class Graph<T> {
 		else {return false}
 	}
 
-	//func verticesAreConnected(firstVertex : Int, secondVertex : Int) -> Bool
-	//What's the difference between this and vertices are adjacent?
+	func verticesAreConnected(firstVertex : Int, secondVertex : Int) -> Bool {
+		return breadthFirstSearch(firstVertex).contains(secondVertex)
+	}
 
 
 	func breadthFirstSearch(_ start : Int) -> [Int] {
