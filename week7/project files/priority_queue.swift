@@ -6,27 +6,60 @@
 //  Copyright © 2020 Cedric Lam. All rights reserved.
 //
 
-class PriorityQueue <T: Comparable> {
-    var queue = Heap<T>()
+struct PriorityQueueNode <T: Comparable>: Comparable {
+	var element: T
+	var priority: Int
 
-	//maybe add the item to arary and prioity to the heap? IDK how.
+	init(_ value: T, priority: Int) {
+		self.element = value
+		self.priority = priority
+	}
+
+	static func ==(_ lhs: PriorityQueueNode, _ rhs: PriorityQueueNode) -> Bool {
+		return lhs.priority == rhs.priority
+	}
+
+	static func <(_ lhs: PriorityQueueNode, _ rhs: PriorityQueueNode) -> Bool {
+		return lhs.priority < rhs.priority
+	}
+}
+
+class PriorityQueue <T: Comparable> {
+    var queue: [PriorityQueueNode<T>] = []
 
     var isEmpty: Bool {
        return queue.isEmpty
     }
 
-	func insert(element : T, withPriority : Int) {
-		queue.insert(element : element)
+	func sortQueue() {
+        queue = queue.sorted(by: < )
 	}
 
-	func pullHighestPriority() -> T {
-		return queue.extractMin()
+	func insert(element : T, withPriority : Int) {
+		//if the element is already there, update it with the new prio
+		if queue.contains(where: {$0.element == element}) {
+
+			//get that specific element using filter. Using if var because that element might be optional.
+			if var elementToUpdate = queue.filter({ $0.element == element }).first {
+
+				elementToUpdate.priority = withPriority
+				sortQueue()
+			}
+		}
+		
+		else {
+			let newNode = PriorityQueueNode<T>(element, priority: withPriority)
+
+			queue.append(newNode)
+			sortQueue()
+		}
+	}
+
+	func pullHighestPriority() -> T? {
+		guard isEmpty == false else {
+			return nil
+		}
+		return queue.removeFirst().element
 	}
     
 }
-
-/* 
-I cant seem to figure out the prio queue :/ it'so... illogical?? For example in a prio queue with 1 as the highest priority, an element of value 10 with priority of 1 would be on top right? How do you keep track of two things at once? I think it's doable if I use nodes for heap, but I didn't, so how can I store both the priority and the element in the heap value? 
-
-My main concern was if there are elements with the same priority, but different value (like 1 and 10 both have priority of 1, which means that 1 should be in front of 10). How do I evaluate this? I tried keeping a count but then I realized I'd need to keep a count for every priority value in the queue which is not ideal. I'm so confused,though this SHOULD be pretty easy to implement :|
-*/
