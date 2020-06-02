@@ -42,10 +42,6 @@ class Graph<T> {
 
 			vertexArray[secondVertex] = vertexArray[secondVertex].filter {$0 != firstVertex}
 		} 
-		
-		// if vertexArray[secondVertex].contains(firstVertex) {
-		// 	vertexArray[secondVertex] = vertexArray[secondVertex].filter {$0 != firstVertex}
-		// } 
 	}
 
 	func neighborsOf( vertex : Int ) -> [Int] {
