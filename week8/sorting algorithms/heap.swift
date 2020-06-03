@@ -1,7 +1,6 @@
 //
 //  heap.swift
 //
-
 import Foundation
 
 enum IndexError: Error {
@@ -61,8 +60,8 @@ class Heap<T : Comparable> {
 		var left = leftIndex(0)
 		var right = rightIndex(0)
 
-		if heap.count > 3 {
-		//loop applies to heaps with valid left and right children only
+		if heap.count >= 3 {
+		//loop applies to heaps with valid left and right children only, meaning count should be larger than 3.
 			while 	heap[currentIndex] > heap[left] || heap[currentIndex] > heap[right] {
 					
 				if heap[left] <= heap[right] {
@@ -83,12 +82,6 @@ class Heap<T : Comparable> {
 				}
 			}
 		}
-
-		else {
-			
-			heap.reverse()
-		}
-
 
 		return root
 	}
