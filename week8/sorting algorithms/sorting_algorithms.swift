@@ -26,14 +26,19 @@ extension Array where Element : Comparable {
 	//starting with bubble sort cos bubble is cool
 
 		var array = self
+		var swapped : Bool
 
-		while !array.sorted() {
-			for x in 0..<(self.count - 1) {
-				if array[x] > array[x+1] {
-					array.swapAt(x, x+1)
-				}
-			}
-		}
+        repeat {
+		//repeat while is cool! Thanks Justin :)
+            swapped = false
+            for x in 0..<(self.count - 1) {
+                if array[x] > array[x+1] {
+                    array.swapAt(x, x+1)
+                    swapped = true
+                }
+            }
+
+        } while swapped
 
 		return array
 	}
@@ -74,17 +79,19 @@ extension Array where Element : Comparable {
 	}
 
 	func heapSort()-> Array {
-		let heapified = Heap(self)
+		let heap = Heap<Element>()
+		var array: [Element] = []
 
-		for i in stride(from: self.count - 1, through: 0, by: -1) {
-			heapified.heap.swapAt(0, i)
+		for element in self {
+			heap.insert(element: element)
 		}
-		//the smallest element always end up at the end of the array, so need to move it to the top. I need to change this without touching the heap so as to screw up everything.
-		//making a new array instead.
-		var array = heapified.heap
 
-		let lastEle = array.removeLast()
-		array.insert(lastEle, at: 0)
+		while !heap.isEmpty {
+			do {
+				let element = try! heap.extractMin()
+				array.append(element)
+			}
+		}
 
 		return array
 	}
