@@ -42,6 +42,7 @@ class Graph<T> {
 
 			vertexArray[secondVertex] = vertexArray[secondVertex].filter {$0 != firstVertex}
 		} 
+		
 	}
 
 	func neighborsOf( vertex : Int ) -> [Int] {
@@ -142,30 +143,39 @@ class Graph<T> {
 	}
 
 	func hasCycle() -> Bool {
-	//Why is this code not running :(. Segmentation error???
 
 		//make an array to check if a vertex is marked or not 
 		var marked = Array(repeating: false, count: self.vertices)
-		var cycle = 0
 
 		while marked.contains(false) {
-			let currentVertex = marked.firstIndex(of: false)
-
-			marked[currentVertex!] = true
-
-			for i in neighborsOf(vertex : currentVertex!) {
-            	if marked[i] == false {
-					_ = self.hasCycle()
-				}
-
-				else {
-					cycle = 1
-					break
+			if let currentVertex = marked.firstIndex(of: false) {
+				if self.hasCycleHelp(from: currentVertex, prev: nil, marked: &marked) {
+					return true
 				}
 			}
 		}
 
-		return cycle == 1
+		return false
 	}
+
+	private func hasCycleHelp(from vertex: Int, prev: Int?, marked: inout [Bool]) -> Bool {
+
+		marked[vertex] = true
+
+		for i in neighborsOf(vertex : vertex) {
+			if marked[i] == false {
+				if self.hasCycleHelp(from: i, prev: vertex, marked: &marked) {
+					return true
+				}
+			}
+
+			else if i != prev {
+				return true
+			}
+		}
+
+		return false
+	}
+
 
 }
