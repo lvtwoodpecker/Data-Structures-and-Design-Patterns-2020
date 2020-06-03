@@ -23,8 +23,9 @@ func test_sorts(){
 }
 
 func main() {
+	test_sorts()
+	
 	var shuffledArray = [Int]((0..<1000).shuffled())
-
 	print("Heap:", AverageTimeHeap(shuffledArray))
 	print("Sel:", AverageTimeSelection(shuffledArray))
 	print("Insertion:", AverageTimeInsertion(shuffledArray))
