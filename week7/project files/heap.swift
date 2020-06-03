@@ -65,8 +65,8 @@ class Heap<T : Comparable> {
 		var left = leftIndex(0)
 		var right = rightIndex(0)
 
-		if heap.count > 3 {
-		//loop applies to heaps with valid left and right children only
+		if heap.count >= 3 {
+		//loop applies to heaps with valid left and right children only, meaning count should be larger than 3.
 			while 	heap[currentIndex] > heap[left] || heap[currentIndex] > heap[right] {
 					
 				if heap[left] <= heap[right] {
@@ -87,14 +87,6 @@ class Heap<T : Comparable> {
 				}
 			}
 		}
-
-		else {
-			/*
-			I found out a shortcut: if heap has 3 elements, after popping last I just need to reverse it to get the correct ordering. If heap has 1 or 2 elements, the order doesn't matter after popping, since heap would only have 0 or 1 element.
-			*/
-			heap.reverse()
-		}
-
 
 		return root
 	}
