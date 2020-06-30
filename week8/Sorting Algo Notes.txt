@@ -1,0 +1,26 @@
+Sorting Algorithms:
+
+selection sort
+bubble sort
+insertion sort
+
+Comb sort: Divide into multiple groups then bubble sort it
+
+Shell sort: Divide into a few groups, decreasing number of groups. Can use any sort between the 2.
+
+Heap sort: transfer data into a heap, then push the root into the output array. Then update the root
+
+Quicksort: Set up bounds and then recurse. Quite complicated
+
+Mergesort: + If array size >= 2, split array into subarrays
+
+         + Recurse
+
++ Merge back 2getha
+
+
+Radix Sort: Sort all nums into piles 0-9, according to right-most digit (of its value)
+
+Then combine back to a list.
+
+Then do it for SECOND RIGHT MOST digit. If not enough digits, pad with 0
